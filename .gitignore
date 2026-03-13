@@ -1,0 +1,177 @@
+# ==============================================================================
+# Crypto Statistical Arbitrage - Multi-Venue Trading System
+# ==============================================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.\#*
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing & Coverage
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+pytestdebug.log
+
+# Type Checking
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# Documentation Build
+docs/_build/
+site/
+
+# Data Files
+data/raw/
+data/processed/
+data/interim/
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.parquet
+*.parquet.gzip
+*.parquet.snappy
+*.csv
+!config/*.csv
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.db
+*.sqlite
+*.sqlite3
+
+# API Keys & Secrets
+config/.env
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+*.cer
+secrets.yaml
+secrets.yml
+credentials.json
+service_account.json
+*_api_key*
+*_secret*
+api_keys.env
+.secrets
+
+# Logs
+logs/
+*.log
+*.log.*
+log_*.txt
+
+# OS Files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Generated Outputs (regenerable)
+outputs/
+output/
+reports/figures/
+reports/visualizations/
+reports/30day_test/
+reports/phase2_comprehensive/
+reports/phase3_backtest/
+reports/phase3_comprehensive/
+reports/phase3_verification/
+!reports/.gitkeep
+!reports/figures/.gitkeep
+!reports/tables/.gitkeep
+
+# Model Files
+*.pb
+*.onnx
+models/
+!models/.gitkeep
+
+# Profiling
+*.prof
+*.lprof
+profile_output/
+
+# Cache
+.cache/
+checkpoints/
+*.checkpoint
+
+# Experiment Tracking
+mlruns/
+wandb/
+dask-worker-space/
+
+# Misc
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+*.mo
+*.pot
+celerybeat-schedule
+celerybeat.pid
+*.sage.py

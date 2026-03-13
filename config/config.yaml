@@ -1,0 +1,298 @@
+# ==============================================================================
+# CRYPTO STATISTICAL ARBITRAGE - MAIN CONFIGURATION
+# ==============================================================================
+# Version: 1.0.0
+# This file contains all project-level configuration settings.
+# Venue-specific settings are in venues.yaml
+# API keys should NEVER be stored here - use environment variables
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# PROJECT METADATA
+# ------------------------------------------------------------------------------
+project:
+  name: "Crypto Statistical Arbitrage - Multi-Venue System"
+  version: "1.0.0"
+  author: "Tamer Atesyakar"
+  description: |
+    Multi-venue crypto statistical arbitrage system implementing pairs trading,
+    futures curve strategies, and options volatility surface analysis across
+    CEX, hybrid, and DEX venues.
+
+# ------------------------------------------------------------------------------
+# DATA CONFIGURATION
+# ------------------------------------------------------------------------------
+data:
+  # Date range for data collection (MAXIMUM: 2020 to present for comprehensive backtesting)
+  start_date: "2020-01-01"
+  end_date: "2026-02-01"       # Updated dynamically at runtime to current date
+
+  # Data quality thresholds (OPTIMIZED for maximum data collection)
+  quality:
+    min_coverage: 0.80           # Minimum 80% data coverage (relaxed for more venues)
+    max_missing_pct: 20.0        # Maximum 20% missing data (allows more venues)
+    outlier_std_threshold: 5.0   # Flag outliers beyond 5 std
+    min_observations: 100        # Minimum observations (relaxed from 252 for newer venues)
+  
+  # Storage configuration
+  storage:
+    format: "parquet"
+    compression: "gzip"
+    partition_by: ["venue", "symbol"]
+  
+  # Default timeframes
+  timeframes:
+    ohlcv: "1h"                  # Hourly OHLCV
+    funding: "8h"                # 8-hour funding (normalize hourly venues)
+    options: "1h"                # Hourly options snapshots
+  
+  # Cross-validation settings
+  validation:
+    enabled: true
+    min_correlation: 0.95        # Minimum correlation between venues
+    max_price_deviation: 0.005   # Maximum 0.5% price deviation
+
+# ------------------------------------------------------------------------------
+# BACKTEST CONFIGURATION
+# ------------------------------------------------------------------------------
+backtest:
+  # Walk-forward periods
+  train_start: "2022-01-01"
+  train_end: "2023-06-30"
+  test_start: "2023-07-01"
+  test_end: "2024-12-31"
+  
+  # Capital and sizing
+  initial_capital: 1000000       # $1M initial capital
+  base_position_size: 0.10       # 10% of capital per position
+  
+  # Performance benchmarks
+  benchmarks:
+    - "btc_spot"                 # Buy-and-hold BTC
+    - "naive_roll"               # Naive roll strategy
+    - "perp_hold"                # Perpetual hold (Binance)
+
+# ------------------------------------------------------------------------------
+# STRATEGY: PAIRS TRADING
+# ------------------------------------------------------------------------------
+strategies:
+  pairs_trading:
+    # Signal generation
+    lookback_period: 90          # Days for z-score calculation
+    
+    # Entry/exit thresholds by venue type
+    thresholds:
+      cex:
+        entry: 2.0               # Enter when |z| > 2.0
+        exit: 0.0                # Exit when z crosses 0
+        stop: 3.0                # Stop loss at |z| > 3.0
+      dex:
+        entry: 2.5               # Higher threshold for gas costs
+        exit: 1.0                # Earlier exit for DEX
+        stop: 3.0
+    
+    # Position management
+    max_holding_days: 30         # Force exit after 30 days
+    
+    # Cointegration settings
+    cointegration:
+      significance_level: 0.05   # 5% significance
+      min_half_life: 1           # Minimum half-life (days)
+      max_half_life: 7           # Maximum half-life (days)
+      rolling_window: 90         # Rolling test window
+    
+    # Universe construction
+    universe:
+      cex:
+        min_volume: 10000000     # $10M daily volume
+        min_market_cap: 300000000  # $300M market cap
+      dex:
+        min_tvl: 500000          # $500k TVL
+        min_volume: 50000        # $50k daily volume
+        min_trades: 100          # 100 trades/day
+    
+    # Position sizing
+    position_sizing:
+      method: "volatility_weighted"  # Options: equal, volatility_weighted, kelly
+      tier1_max: 100000          # $100k max for CEX pairs
+      tier2_max: 50000           # $50k max for mixed pairs
+      tier3_max: 10000           # $10k max for DEX pairs
+
+  # --------------------------------------------------------------------------
+  # STRATEGY: FUTURES CURVE
+  # --------------------------------------------------------------------------
+  futures_curve:
+    # Calendar spread parameters
+    calendar_spread:
+      long_entry_basis: 15.0     # Enter long when basis > 15%
+      long_exit_basis: 5.0       # Exit long when basis < 5%
+      short_entry_basis: -10.0   # Enter short when basis < -10%
+      short_exit_basis: -3.0     # Exit short when basis > -3%
+      min_dte: 7                 # Minimum days to expiry
+    
+    # Cross-venue arbitrage
+    cross_venue:
+      min_spread: 0.5            # Minimum 0.5% spread to trade
+      max_exposure: 0.25         # Max 25% of capital
+    
+    # Risk management
+    risk:
+      max_leverage: 2.0          # Maximum 2x leverage
+      stop_loss_basis: 5.0       # Exit on 5% adverse basis move
+      margin_buffer: 0.50        # 50% margin cushion
+    
+    # Venue allocation limits
+    venue_limits:
+      binance: 0.50              # Max 50% on Binance
+      cme: 0.30                  # Max 30% on CME
+      hyperliquid: 0.15          # Max 15% on Hyperliquid
+      dydx: 0.05                 # Max 5% on dYdX
+
+  # --------------------------------------------------------------------------
+  # STRATEGY: VOLATILITY SURFACE
+  # --------------------------------------------------------------------------
+  vol_surface:
+    # Surface construction
+    surface:
+      min_strikes: 5             # Minimum strikes per expiry
+      min_expiries: 3            # Minimum expiries
+      svi_fitting: true          # Use SVI parameterization
+    
+    # Trading parameters
+    trading:
+      min_iv_deviation: 2.0      # 2% IV deviation to trade
+      delta_hedge_threshold: 0.05  # Rehedge at 0.05 delta change
+      gamma_limit: 0.1           # Maximum gamma exposure
+    
+    # DVOL analysis
+    dvol:
+      lookback: 30               # Days for DVOL analysis
+      regime_threshold: 10       # 10% DVOL change = regime shift
+
+# ------------------------------------------------------------------------------
+# PORTFOLIO CONFIGURATION
+# ------------------------------------------------------------------------------
+portfolio:
+  # Allocation constraints
+  constraints:
+    max_cex_allocation: 0.70     # Maximum 70% in CEX
+    max_dex_allocation: 0.30     # Maximum 30% in DEX
+    max_single_strategy: 0.25    # Maximum 25% per strategy
+    max_sector_exposure: 0.40    # Maximum 40% per sector
+    max_pair_correlation: 0.70   # Maximum correlation between pairs
+  
+  # Position limits
+  positions:
+    max_cex_positions: 8         # Maximum CEX pairs
+    max_dex_positions: 3         # Maximum DEX pairs
+    max_total_positions: 10      # Maximum total positions
+  
+  # Optimization settings
+  optimization:
+    method: "hrp"                # Options: equal, mvo, risk_parity, hrp, black_litterman
+    rebalance_frequency: "weekly"
+    risk_free_rate: 0.04         # 4% risk-free rate
+    target_volatility: 0.15      # 15% target annual volatility
+
+# ------------------------------------------------------------------------------
+# RISK MANAGEMENT
+# ------------------------------------------------------------------------------
+risk:
+  # Portfolio-level limits
+  portfolio:
+    max_drawdown_stop: 0.20      # 20% drawdown stops trading
+    daily_var_limit: 0.05        # 5% daily VaR limit
+    weekly_loss_limit: 0.10      # 10% weekly loss limit
+  
+  # Position-level limits
+  position:
+    cex_limit: 100000            # $100k per CEX position
+    dex_limit: 50000             # $50k per DEX position
+    hybrid_limit: 75000          # $75k per hybrid position
+  
+  # Stress test scenarios
+  stress_tests:
+    exchange_failure:
+      enabled: true
+      loss_pct: 1.0              # 100% loss on venue
+    dex_exploit:
+      enabled: true
+      loss_pct: 0.5              # 50% loss
+    liquidity_crisis:
+      enabled: true
+      slippage_mult: 10          # 10x slippage
+    gas_spike:
+      enabled: true
+      gas_mult: 10               # 10x gas costs
+    correlation_breakdown:
+      enabled: true
+      target_corr: 0.95          # All correlations → 0.95
+
+# ------------------------------------------------------------------------------
+# EXECUTION CONFIGURATION
+# ------------------------------------------------------------------------------
+execution:
+  # Slippage assumptions
+  slippage:
+    cex: 0.0005                  # 0.05% CEX slippage
+    dex: 0.003                   # 0.30% DEX slippage
+    hybrid: 0.001                # 0.10% hybrid slippage
+  
+  # MEV protection (DEX)
+  mev:
+    use_private_rpc: true        # Use private RPC when available
+    max_mev_tax: 0.001           # Max 0.1% MEV tax
+    use_cow_protocol: true       # Use CowSwap for MEV protection
+  
+  # Order types
+  order_types:
+    entry: "limit"               # Limit orders for entry
+    exit: "market"               # Market orders for exit (ensure fill)
+    stop: "stop_market"          # Stop market for stops
+
+# ------------------------------------------------------------------------------
+# LOGGING CONFIGURATION
+# ------------------------------------------------------------------------------
+logging:
+  level: "INFO"                  # Options: DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # File logging
+  file:
+    enabled: true
+    path: "logs/crypto_statarb.log"
+    max_bytes: 10485760          # 10MB
+    backup_count: 5
+  
+  # Console logging
+  console:
+    enabled: true
+    colorize: true
+
+# ------------------------------------------------------------------------------
+# REPORTING CONFIGURATION
+# ------------------------------------------------------------------------------
+reporting:
+  # Output formats
+  formats:
+    - "html"
+    - "pdf"
+  
+  # Report sections
+  sections:
+    executive_summary: true
+    data_quality: true
+    strategy_performance: true
+    risk_analysis: true
+    recommendations: true
+  
+  # Visualization settings
+  visualization:
+    style: "seaborn"
+    figsize: [12, 8]
+    dpi: 150
+    color_palette: "viridis"
+    venue_colors:
+      cex: "#1f77b4"             # Blue for CEX
+      hybrid: "#2ca02c"          # Green for hybrid
+      dex: "#ff7f0e"             # Orange for DEX

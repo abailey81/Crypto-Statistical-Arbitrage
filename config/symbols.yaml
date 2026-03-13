@@ -1,0 +1,625 @@
+# ==============================================================================
+# EXPANDED SYMBOL UNIVERSE CONFIGURATION - 211 UNIQUE SYMBOLS
+# ==============================================================================
+# Version: 6.0.0
+# Project Requirement: 20+ altcoins for Strategy 2
+# Implemented: 211 unique symbols (209 altcoins + BTC + ETH)
+#
+# SELECTION CRITERIA (PDF-Compliant):
+# - >$10M daily volume (CEX requirement) or >$500K TVL (DEX)
+# - >$300M market cap for CEX universe
+# - 2020-2026 coverage preferred (or document if launched later)
+# - High liquidity on major exchanges (Binance, Coinbase, OKX, Bybit)
+# - Sector grouping for better cointegration probability
+# - All tokens from project specification explicitly included
+# - ALL 200 symbols have Binance USDT perpetual futures available
+#
+# v6.0.0 CHANGES (Feb 2026):
+# Added 11 tokens to expand from 189 to exactly 200 unique symbols:
+#   SHIB  - #2 meme coin, cointegration with DOGE/FLOKI/BONK/WIF/PEPE
+#   TON   - Top-15 L1, Telegram ecosystem, cointegration with SOL/AVAX/DOT
+#   APE   - NFT/metaverse governance, cointegration with AXS/SAND/MANA/GALA
+#   BLUR  - NFT marketplace, cointegration with APE/AXS/SAND
+#   NEO   - Legacy smart contract L1, cointegration with EOS/TRX/ETC/QTUM
+#   DASH  - Digital cash (BTC-era), cointegration with LTC/BCH/ZEC
+#   NMR   - AI/quant hedge fund token, cointegration with FET/AGIX/TAO
+#   RAY   - Solana DEX AMM, cointegration with JUP/ORCA
+#   AXL   - Cross-chain messaging, cointegration with LINK/DOT/ATOM
+#   ARKM  - AI intelligence/analytics, cointegration with FET/WLD/NMR
+#   GNS   - Perpetual DEX, cointegration with GMX/DYDX/SNX/PERP
+#
+# All 11 additions verified on Binance USDT-margined perpetual futures.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# METADATA
+# ------------------------------------------------------------------------------
+metadata:
+  version: "6.0.0"
+  last_updated: "2026-02-07"
+  total_unique_symbols: 211
+  total_altcoins: 209  # Excluding BTC, ETH
+  original_universe: 200  # Symbols carried forward from v5
+  new_additions: 11  # SHIB, TON, APE, BLUR, NEO, DASH, NMR, RAY, AXL, ARKM, GNS
+  requirement: 20  # Project minimum
+  exceeded_by: "10x"
+  note: "211 unique symbols (200 original + 11 new stat-arb additions). All have Binance USDT perpetual futures."
+
+# ------------------------------------------------------------------------------
+# CORE ASSETS (2) - Required for all strategies
+# ------------------------------------------------------------------------------
+core:
+  description: "Reference assets required for all strategies"
+  symbols:
+    - BTC    # Bitcoin - primary benchmark
+    - ETH    # Ethereum - DeFi reference
+
+# ------------------------------------------------------------------------------
+# LAYER 1 BLOCKCHAINS (18) - High liquidity L1s
+# Best for cointegration: Similar market dynamics, competing ecosystems
+# NEW in v6: TON, NEO added
+# ------------------------------------------------------------------------------
+l1_blockchains:
+  description: "Top Layer 1 blockchain protocols - high cointegration potential within group"
+  symbols:
+    # Tier 1 - Highest liquidity, long history
+    - SOL    # Solana - High TPS, major ecosystem
+    - AVAX   # Avalanche - Fast finality, subnets
+    - ADA    # Cardano - PoS research-driven
+    - DOT    # Polkadot - Parachain ecosystem
+    - ATOM   # Cosmos - Interchain hub, IBC
+    - NEAR   # NEAR Protocol - Sharded L1
+    - ALGO   # Algorand - Pure PoS
+    - FTM    # Fantom - DAG-based, Opera network
+    - THETA  # Theta Network - Video streaming L1
+    - ICP    # Internet Computer - Web3 compute
+    - HBAR   # Hedera - Enterprise L1
+    - TON    # Toncoin - Telegram ecosystem (NEW v6, top-15 market cap)
+    - NEO    # Neo - Smart economy, legacy L1 (NEW v6, data from 2017)
+    # Tier 2 - Newer but liquid
+    - SUI    # Sui - Move language, high performance
+    - APT    # Aptos - Move language, Meta origins
+    - SEI    # Sei - Trading-optimized L1
+    - INJ    # Injective - DeFi-focused L1
+    - TIA    # Celestia - Modular data availability
+
+# ------------------------------------------------------------------------------
+# LAYER 2 SOLUTIONS (8) - Ethereum scaling with correlated dynamics
+# Best for cointegration: All scale ETH, compete directly
+# ------------------------------------------------------------------------------
+l2_solutions:
+  description: "Ethereum L2 scaling solutions - high intra-sector correlation"
+  symbols:
+    # Optimistic Rollups
+    - ARB    # Arbitrum - Largest L2 by TVL
+    - OP     # Optimism - OP Stack leader
+    # ZK Rollups
+    - MATIC  # Polygon/POL - Multi-solution scaling
+    - STRK   # Starknet - ZK-STARK rollup
+    - MANTA  # Manta Network - Modular ZK
+    - ZK     # zkSync - ZK rollup scaling
+    # Gaming L2
+    - IMX    # ImmutableX - Gaming focused
+    # Bitcoin L2
+    - STX    # Stacks - Bitcoin smart contracts
+
+# ------------------------------------------------------------------------------
+# DEFI PROTOCOLS - LENDING (9) - Direct competitors
+# Best for cointegration: Compete for same TVL, similar use case
+# ------------------------------------------------------------------------------
+defi_lending:
+  description: "DeFi lending protocols - high cointegration within category"
+  symbols:
+    - AAVE   # Aave - Multi-chain lending leader
+    - COMP   # Compound - Algorithmic money markets
+    - MKR    # MakerDAO - DAI stablecoin issuer
+    - LQTY   # Liquity - 0% interest loans
+    - SPELL  # Abracadabra - Magic Internet Money
+    - ALPHA  # Alpha Venture DAO
+    - CREAM  # Cream Finance - Lending protocol
+    - CVX    # Convex Finance - CRV yield optimization
+    - ENA    # Ethena - Synthetic dollar
+
+# ------------------------------------------------------------------------------
+# DEFI PROTOCOLS - DEX TOKENS (15) - AMM governance tokens
+# Best for cointegration: All compete for trading volume
+# NEW in v6: RAY, GNS added
+# ------------------------------------------------------------------------------
+defi_dex:
+  description: "DEX governance tokens - strong cointegration potential"
+  symbols:
+    # Tier 1 AMMs
+    - UNI    # Uniswap - AMM pioneer
+    - SUSHI  # SushiSwap - Multi-chain DEX
+    - CRV    # Curve - Stablecoin DEX
+    - BAL    # Balancer - Weighted pools
+    - CAKE   # PancakeSwap - BSC DEX leader
+    # Perp DEXs
+    - DYDX   # dYdX - Decentralized perps
+    - GMX    # GMX - GLP model perps
+    - SNX    # Synthetix - Synthetic assets
+    - GNS    # Gains Network - Perp DEX (NEW v6, pairs with GMX/DYDX/PERP)
+    - PERP   # Perpetual Protocol - Decentralized perps
+    # Solana DEXs
+    - JUP    # Jupiter - Solana aggregator
+    - ORCA   # Orca - Solana DEX
+    - RAY    # Raydium - Solana AMM (NEW v6, pairs with JUP/ORCA)
+    # Aggregators & Cross-chain
+    - 1INCH  # 1inch - DEX aggregator
+    - RUNE   # THORChain - Cross-chain swaps
+    - JOE    # TraderJoe - Avalanche DEX
+
+# ------------------------------------------------------------------------------
+# LIQUID STAKING & YIELD (9) - Compete for staked ETH
+# Best for cointegration: All track ETH staking yields
+# ------------------------------------------------------------------------------
+liquid_staking:
+  description: "Liquid staking protocols - highly correlated dynamics"
+  symbols:
+    - LDO    # Lido - Largest liquid staking
+    - RPL    # Rocket Pool - Decentralized staking
+    - FXS    # Frax Share - frxETH staking
+    - ANKR   # Ankr - Multi-chain staking
+    - SSV    # SSV Network - Distributed validators
+    - EIGEN  # EigenLayer - Restaking protocol
+    - PENDLE # Pendle - Yield tokenization
+    - ETHFI  # Ether.fi - Decentralized staking
+    - YFI    # Yearn Finance - Yield aggregator
+
+# ------------------------------------------------------------------------------
+# INFRASTRUCTURE & ORACLES (13) - Web3 building blocks
+# Best for cointegration: Similar demand drivers
+# NEW in v6: AXL added
+# ------------------------------------------------------------------------------
+infrastructure:
+  description: "Web3 infrastructure - oracles, storage, compute"
+  symbols:
+    # Oracles
+    - LINK   # Chainlink - Oracle market leader
+    - BAND   # Band Protocol - Cross-chain oracle
+    - API3   # API3 - First-party oracles
+    - TRB    # Tellor - Decentralized oracle
+    - PYTH   # Pyth Network - Low-latency oracle
+    # Indexing & Data
+    - GRT    # The Graph - Indexing protocol
+    - OCEAN  # Ocean Protocol - Data marketplace
+    - ENS    # Ethereum Name Service - Web3 identity
+    - MASK   # Mask Network - Web3 social infra
+    # Storage
+    - AR     # Arweave - Permanent storage
+    - FIL    # Filecoin - Decentralized storage
+    - STORJ  # Storj - Distributed storage
+    # Cross-chain
+    - AXL    # Axelar - Cross-chain messaging (NEW v6, pairs with LINK/DOT/ATOM)
+
+# ------------------------------------------------------------------------------
+# COMPUTE & RENDER (4) - Decentralized compute
+# Best for cointegration: All serve AI/compute demand
+# ------------------------------------------------------------------------------
+compute:
+  description: "Decentralized compute and rendering"
+  symbols:
+    - RNDR   # Render Network - Decentralized GPU
+    - RENDER # Render Network (new ticker)
+    - AKT    # Akash - Cloud compute
+    - LPT    # Livepeer - Video transcoding
+
+# ------------------------------------------------------------------------------
+# AI & MACHINE LEARNING (8) - Hot sector, correlated
+# Best for cointegration: AI narrative drives them together
+# NEW in v6: NMR, ARKM added
+# ------------------------------------------------------------------------------
+ai_tokens:
+  description: "AI and machine learning tokens - strong thematic correlation"
+  symbols:
+    - FET    # Fetch.ai/ASI - AI agents
+    - AGIX   # SingularityNET/ASI - AI marketplace
+    - TAO    # Bittensor - Decentralized AI
+    - WLD    # Worldcoin - AI + identity
+    - IO     # io.net - Decentralized GPU
+    - PHB    # Phoenix - AI infrastructure
+    - NMR    # Numeraire - AI hedge fund (NEW v6, pairs with FET/AGIX/TAO)
+    - ARKM   # Arkham - AI intelligence (NEW v6, pairs with FET/WLD/NMR)
+
+# ------------------------------------------------------------------------------
+# GAMING & METAVERSE (7) - Gaming tokens correlated
+# Best for cointegration: All follow gaming sentiment
+# NEW in v6: APE, BLUR added
+# ------------------------------------------------------------------------------
+gaming_metaverse:
+  description: "Gaming and metaverse tokens - sector correlation"
+  symbols:
+    - AXS    # Axie Infinity - P2E pioneer
+    - SAND   # The Sandbox - Metaverse platform
+    - MANA   # Decentraland - Virtual world
+    - GALA   # Gala Games - Gaming ecosystem
+    - ENJ    # Enjin - Gaming infrastructure
+    - APE    # ApeCoin - NFT/Metaverse (NEW v6, pairs with AXS/SAND/MANA)
+    - BLUR   # Blur - NFT marketplace (NEW v6, pairs with APE/AXS/SAND)
+
+# ------------------------------------------------------------------------------
+# MAJOR ALTCOINS (13) - Highest liquidity, long history (2017-2020 data)
+# Best for cointegration: Strong benchmark correlations
+# NEW in v6: DASH added
+# ------------------------------------------------------------------------------
+major_altcoins:
+  description: "Established large-cap altcoins with long trading history"
+  symbols:
+    - BNB    # Binance Coin - CEX leader (data from 2017)
+    - XRP    # Ripple - Payment network (data from 2017)
+    - DOGE   # Dogecoin - Meme leader (data from 2017)
+    - LTC    # Litecoin - Bitcoin alternative (data from 2017)
+    - BCH    # Bitcoin Cash - BTC fork (data from 2017)
+    - ETC    # Ethereum Classic - ETH fork (data from 2017)
+    - XLM    # Stellar - Payments (data from 2017)
+    - VET    # VeChain - Supply chain (data from 2018)
+    - TRX    # Tron - High throughput (data from 2017)
+    - EOS    # EOS - Smart contracts (data from 2017)
+    - ZEC    # Zcash - Privacy coin (data from 2017)
+    - QTUM   # Qtum - UTXO smart contracts (data from 2017)
+    - DASH   # Dash - Digital cash (NEW v6, data from 2017, pairs with LTC/BCH/ZEC)
+
+# ------------------------------------------------------------------------------
+# MEME TOKENS (8) - High volume, correlated sentiment
+# Best for cointegration: All follow meme sentiment
+# NEW in v6: SHIB added
+# ------------------------------------------------------------------------------
+meme_tokens:
+  description: "Meme tokens with high liquidity - strong intra-sector correlation"
+  symbols:
+    - PEPE   # Pepe - Frog meme
+    - FLOKI  # Floki Inu - Viking dog
+    - BONK   # Bonk - Solana meme
+    - WIF    # Dogwifhat - Solana meme
+    - NOT    # Notcoin - TON ecosystem
+    - PEOPLE # ConstitutionDAO - Meme adjacent
+    - DOGS   # Dogs - TON meme token
+    - SHIB   # Shiba Inu - Doge competitor (NEW v6, pairs with DOGE/FLOKI/BONK/WIF)
+
+# ------------------------------------------------------------------------------
+# RWA & TOKENIZATION (1) - Real World Assets
+# ------------------------------------------------------------------------------
+rwa_tokens:
+  description: "Real World Asset tokens"
+  symbols:
+    - ONDO   # Ondo Finance - Tokenized securities
+
+# ------------------------------------------------------------------------------
+# DEFI INFRASTRUCTURE (5) - Smaller DeFi building blocks
+# ------------------------------------------------------------------------------
+defi_infrastructure:
+  description: "Smaller DeFi infrastructure and utility tokens"
+  symbols:
+    - OSMO   # Osmosis - Cosmos DEX
+    - KAVA   # Kava - Cosmos DeFi hub
+    - ROSE   # Oasis Network - Privacy L1
+    - CELO   # Celo - Mobile-first L1
+    - EGLD   # MultiversX - Adaptive sharding
+
+# ------------------------------------------------------------------------------
+# LEGACY & MID-CAP INFRASTRUCTURE (13)
+# Long history tokens with proven Binance futures liquidity
+# ------------------------------------------------------------------------------
+legacy_infrastructure:
+  description: "Legacy mid-cap tokens with trading history"
+  symbols:
+    - KAS    # Kaspa - GHOSTDAG PoW
+    - QNT    # Quant - Enterprise interop
+    - CFX    # Conflux - China-linked L1
+    - CKB    # Nervos Network - UTXO smart contracts
+    - ANKR   # Ankr (also in liquid staking)
+    - NKN    # NKN - Network infrastructure
+    - IOTA   # IOTA - IoT-focused L1
+    - ZIL    # Zilliqa - Sharding pioneer
+    - ICX    # Icon - Cross-chain protocol
+    - FLOW   # Flow - NFT-optimized L1
+    - XTZ    # Tezos - Self-amending blockchain
+    - XEM    # NEM - Enterprise blockchain
+    - BOND   # BarnBridge - Risk tokenization
+
+# ------------------------------------------------------------------------------
+# SMALL-CAP BINANCE TOKENS (38) - High volume on Binance futures
+# Useful for cross-sectional momentum and mean-reversion signals
+# ------------------------------------------------------------------------------
+small_cap_binance:
+  description: "Smaller-cap Binance-listed tokens with perpetual futures"
+  symbols:
+    - ACH    # Alchemy Pay - Crypto payments
+    - OGN    # Origin Protocol - NFT/DeFi
+    - BICO   # Biconomy - Gas abstraction
+    - RLC    # iExec - Cloud computing
+    - CTSI   # Cartesi - Linux rollups
+    - DUSK   # Dusk Network - Privacy smart contracts
+    - REQ    # Request Network - Payment requests
+    - KNC    # Kyber Network - Liquidity protocol
+    - CELR   # Celer Network - State channels
+    - CHR    # Chromia - Relational blockchain
+    - DAR    # Mines of Dalarnia - P2E game
+    - LEVER  # LeverFi - Leveraged trading
+    - LOOM   # Loom Network - Scaling solution
+    - AMB    # Ambrosus - Supply chain
+    - HIGH   # Highstreet - Metaverse
+    - KEY    # SelfKey - Identity management
+    - LINA   # Linear Finance - Synthetic assets
+    - BAKE   # BakerySwap - BSC DEX
+    - MTL    # Metal - Payments
+    - FRONT  # Frontier - DeFi aggregator
+    - TLM    # Alien Worlds - P2E gaming
+    - TROY   # Troy Trade - Trading infra
+    - UNFI   # Unifi Protocol - Cross-chain DeFi
+    - DOCK   # Dock - Verifiable credentials
+    - SFP    # SafePal - Hardware wallet
+    - FOR    # ForTube - DeFi lending
+    - BEL    # Bella Protocol - DeFi suite
+    - WAN    # Wanchain - Cross-chain
+    - MBL    # MovieBloc - Content platform
+    - WING   # Wing Finance - Lending
+    - SXP    # Solar/Swipe - Payments
+    - BAT    # Basic Attention Token - Browser
+    - AUDIO  # Audius - Music streaming
+    - COTI   # COTI - Payment infra
+    - IOST   # IOST - Scalable blockchain
+    - IOTX   # IoTeX - IoT blockchain
+    - LSK    # Lisk - Sidechain platform
+    - ONT    # Ontology - Identity/data
+    - RVN    # Ravencoin - Asset transfer
+    - WAVES  # Waves - Smart assets
+    - BADGER # Badger DAO - BTC on Ethereum
+    - GMT    # STEPN - Move-to-earn
+    - SNT    # Status Network - L2 messaging
+
+# ------------------------------------------------------------------------------
+# BINANCE LAUNCHPAD & NEW LISTINGS (36) - Recent high-volume launches
+# Excellent for short-term stat-arb: high volatility, sector clustering
+# ------------------------------------------------------------------------------
+binance_new_listings:
+  description: "Recent Binance launches with perpetual futures - high volatility for mean-reversion"
+  symbols:
+    # 2024 launches
+    - DYM    # Dymension - Modular rollups
+    - AEVO   # Aevo - Options platform
+    - PIXEL  # Pixels - Gaming (also in gaming context)
+    - PORTAL # Portal - Gaming token
+    - BB     # BounceBit - BTC restaking
+    - LISTA  # Lista DAO - Liquid staking
+    - ZRO    # LayerZero - Cross-chain messaging
+    - BLAST  # Blast - L2 with native yield
+    - BANANA # Banana Gun - Trading bot
+    - CATI   # Catizen - TON gaming
+    - HMSTR  # Hamster Kombat - TON gaming
+    - SCR    # Scroll - ZK rollup
+    - USUAL  # Usual - Stablecoin protocol
+    - ME     # Magic Eden - NFT marketplace
+    - MOVE   # Movement Labs - L2
+    - PENGU  # Pudgy Penguins - NFT/meme
+    - VANA   # Vana - Data DAO
+    - ACX    # Across Protocol - Bridge
+    - THE    # Thena - BSC DEX
+    - IO     # io.net - GPU compute (also in AI)
+    # 2025 launches
+    - HIVE   # Hive - Social blockchain
+    - PHAT   # Phala Network - Privacy compute
+    - COOKIE # Cookie3 - Marketing analytics
+    - ANIME  # Animecoin - Anime/culture token
+    - TST    # The Standard - Stablecoin
+    - LAYER  # Layer - Infrastructure
+    - IP     # Story Protocol - IP tokenization
+    - KAITO  # Kaito - AI search
+    - SHELL  # MyShell - AI platform
+    - GPS    # GoPlus Security - Web3 security
+    - BMT    # BMT - DeFi token
+    - NIL    # Nil Foundation - ZK compute
+    - PARTI  # Particle Network - Chain abstraction
+    - GUNZ   # GunZ - Gaming
+    - FORM   # Formation Fi - DeFi yield
+    - BROCCOLI # Broccoli - Meme token
+
+# ==============================================================================
+# COMPLETE UNIQUE SYMBOL COUNT VERIFICATION (211 unique)
+# ==============================================================================
+# Core:                   2  (BTC, ETH)
+# L1 Blockchains:        18  (incl. NEW: TON, NEO)
+# L2 Solutions:           8
+# DeFi Lending:           9
+# DeFi DEX:              16  (incl. NEW: RAY, GNS)
+# Liquid Staking:         9
+# Infrastructure:        13  (incl. NEW: AXL)
+# Compute:                4
+# AI/ML:                  8  (incl. NEW: NMR, ARKM)
+# Gaming/Metaverse:       7  (incl. NEW: APE, BLUR)
+# Major Altcoins:        13  (incl. NEW: DASH)
+# Meme Tokens:            8  (incl. NEW: SHIB)
+# RWA:                    1
+# DeFi Infrastructure:    5
+# Legacy Infrastructure: 13
+# Small-Cap Binance:     43
+# Binance New Listings:  36
+# ---
+# Raw total (all lists): 213
+# Cross-listed dups:      -2  (ANKR in staking+legacy, IO in AI+new listings)
+# UNIQUE TOTAL:          211  (200 original + 11 new)
+# ==============================================================================
+
+# ==============================================================================
+# STRATEGY-SPECIFIC SYMBOL LISTS
+# ==============================================================================
+
+# Strategy 1: Funding Rate Arbitrage - Symbols with perpetual futures
+funding_rate_symbols:
+  description: "Symbols with perpetual futures across 2+ venues"
+  min_symbols: 100
+  use_categories:
+    - l1_blockchains
+    - l2_solutions
+    - defi_lending
+    - defi_dex
+    - infrastructure
+    - major_altcoins
+    - ai_tokens
+
+# Strategy 2: Altcoin Statistical Arbitrage - Full OHLCV universe
+ohlcv_symbols:
+  description: "Full 211-symbol universe for pairs trading"
+  min_symbols: 200
+  use_all_categories: true
+
+# Strategy 3: Futures Curve Trading - Symbols with dated futures
+futures_curve_symbols:
+  description: "Symbols with quarterly/dated futures"
+  symbols:
+    - BTC
+    - ETH
+    - SOL
+    - BNB
+    - XRP
+
+# Strategy 4: Options Vol Surface - Symbols with options markets
+options_symbols:
+  description: "Symbols with active options markets (Deribit, Aevo)"
+  symbols:
+    - BTC
+    - ETH
+    - SOL
+
+# ==============================================================================
+# SURVIVORSHIP TRACKING - Critical for avoiding look-ahead bias
+# ==============================================================================
+delisted_tokens:
+  description: "Tokens that were delisted or defunct (for survivorship bias)"
+  tokens:
+    - LUNA   # Terra collapse May 2022
+    - UST    # Terra stablecoin collapse
+    - FTT    # FTX collapse Nov 2022
+    - SRM    # Serum (FTX related)
+    - LUNC   # Luna Classic (rebranded)
+    - CEL    # Celsius collapse Jul 2022
+    - VOYAGER # Voyager collapse Jul 2022
+    - BALD   # Rug pull Aug 2023
+    - SQUID  # Squid Game rug Oct 2021
+    # Delisted from Binance 2024-2025
+    - XMR    # Monero - delisted Feb 2024 (privacy regulations)
+    - MULTI  # Multichain - delisted Feb 2024 (protocol collapse)
+    - REN    # Ren Protocol - delisted Dec 2024
+
+# ==============================================================================
+# DATA QUALITY THRESHOLDS (PDF-Compliant)
+# ==============================================================================
+quality_thresholds:
+  # CEX Requirements (from PDF)
+  minimum_daily_volume_usd: 10000000  # $10M
+  minimum_market_cap_usd: 300000000   # $300M
+  minimum_cex_venues: 2
+
+  # DEX Requirements (from PDF)
+  minimum_tvl_usd: 500000             # $500k
+  minimum_dex_daily_volume: 50000     # $50k
+  minimum_daily_trades: 100
+
+  # Data Quality (from PDF)
+  minimum_data_coverage_years: 2      # 2022-2024 preferred
+  maximum_missing_data_pct: 5         # <5% missing, or document if higher
+
+  # Cointegration Pre-filters (from PDF)
+  correlation_min: 0.0                # No minimum - PDF only specifies max 0.70
+  correlation_max: 0.70               # Not too correlated
+  half_life_min_days: 1               # Minimum 1 day
+  half_life_max_days: 14              # Maximum 14 days (PDF strict)
+  half_life_preferred_max_days: 7     # Prefer 1-7 days
+  p_value_threshold: 0.10             # p < 0.10 for significance
+
+# ==============================================================================
+# SECTOR PAIRING RECOMMENDATIONS (for cointegration testing)
+# ==============================================================================
+cointegration_groups:
+  description: "Recommended intra-sector pairs for highest cointegration probability"
+  groups:
+    # === HIGHEST PRIORITY GROUPS (historically proven cointegration) ===
+    - name: "Bitcoin Forks & Digital Cash"
+      tokens: ["LTC", "BCH", "ETC", "DASH", "ZEC"]
+      reason: "BTC-related forks + privacy/cash coins, very strong historical cointegration (half-life ~5-10 days). DASH added v6."
+
+    - name: "Payment Networks"
+      tokens: ["XRP", "XLM"]
+      reason: "Direct competitors, well-documented cointegration pair"
+
+    - name: "Lending Protocols"
+      tokens: ["AAVE", "COMP", "MKR", "LQTY", "CREAM"]
+      reason: "Compete for same TVL, strongest DeFi cointegration group"
+
+    - name: "AMM DEXs"
+      tokens: ["UNI", "SUSHI", "CRV", "BAL", "CAKE", "JOE", "1INCH"]
+      reason: "AMM competitors, fork relationship (UNI/SUSHI)"
+
+    - name: "Move L1s"
+      tokens: ["SUI", "APT"]
+      reason: "Near-identical technology, launched same era, very strong pair"
+
+    - name: "L2 Optimistic Rollups"
+      tokens: ["ARB", "OP"]
+      reason: "Direct L2 competitors, same technology"
+
+    # === HIGH PRIORITY GROUPS ===
+    - name: "L1 Competitors"
+      tokens: ["SOL", "AVAX", "DOT", "ATOM", "NEAR", "SUI", "APT", "SEI", "INJ", "TON"]
+      reason: "All compete for same L1 market share. TON added v6."
+
+    - name: "Perp DEXs"
+      tokens: ["DYDX", "GMX", "SNX", "GNS", "PERP"]
+      reason: "Direct competitors for perpetual trading volume. GNS added v6."
+
+    - name: "Liquid Staking"
+      tokens: ["LDO", "RPL", "FXS", "ANKR", "SSV"]
+      reason: "All track ETH staking yields"
+
+    - name: "Oracles"
+      tokens: ["LINK", "BAND", "API3", "PYTH", "TRB"]
+      reason: "Oracle market competitors"
+
+    - name: "Storage"
+      tokens: ["FIL", "AR", "STORJ"]
+      reason: "Decentralized storage competitors"
+
+    - name: "AI Tokens"
+      tokens: ["FET", "AGIX", "TAO", "OCEAN", "WLD", "NMR", "ARKM", "IO"]
+      reason: "AI narrative correlation. NMR and ARKM added v6."
+
+    - name: "Gaming OGs"
+      tokens: ["AXS", "SAND", "MANA", "GALA", "ENJ"]
+      reason: "Original gaming/metaverse trio + gaming infra, data from 2020"
+
+    - name: "NFT Ecosystem"
+      tokens: ["APE", "BLUR", "AXS", "SAND", "MANA"]
+      reason: "NFT marketplace and metaverse governance tokens. APE and BLUR added v6."
+
+    - name: "Meme Dogs"
+      tokens: ["DOGE", "SHIB", "FLOKI", "BONK", "WIF"]
+      reason: "Meme sentiment correlation. SHIB added v6."
+
+    # === MEDIUM PRIORITY GROUPS ===
+    - name: "Legacy Smart Contracts"
+      tokens: ["EOS", "NEO", "TRX", "QTUM"]
+      reason: "Same era L1s, similar dynamics, full 2020+ data. NEO added v6."
+
+    - name: "Cosmos Ecosystem"
+      tokens: ["ATOM", "OSMO", "INJ", "KAVA", "TIA"]
+      reason: "All part of Cosmos/IBC ecosystem"
+
+    - name: "Solana Ecosystem"
+      tokens: ["SOL", "JUP", "RAY", "ORCA", "BONK", "WIF"]
+      reason: "All Solana-native, ecosystem correlation. RAY added v6."
+
+    - name: "GPU Compute"
+      tokens: ["RNDR", "AKT", "IO"]
+      reason: "Decentralized compute, AI demand driver"
+
+    - name: "Cross-Chain Infrastructure"
+      tokens: ["AXL", "LINK", "DOT", "ATOM"]
+      reason: "Interoperability/messaging infrastructure. AXL added v6."
+
+    - name: "TON Ecosystem"
+      tokens: ["TON", "NOT", "DOGS", "CATI", "HMSTR"]
+      reason: "All TON/Telegram ecosystem tokens. TON added v6."
+
+    - name: "DeFi Yield"
+      tokens: ["YFI", "CVX", "PENDLE", "ETHFI"]
+      reason: "Yield optimization protocols"

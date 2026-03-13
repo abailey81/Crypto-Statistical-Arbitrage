@@ -1,0 +1,141 @@
+# =============================================================================
+# Crypto Statistical Arbitrage - Multi-Venue Trading System
+# Requirements File with Pinned Versions for Reproducibility
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Core Scientific Computing
+# -----------------------------------------------------------------------------
+numpy>=2.0.0
+pandas>=2.2.0
+scipy>=1.14.0
+
+# -----------------------------------------------------------------------------
+# Data Collection & API Clients
+# -----------------------------------------------------------------------------
+ccxt>=4.3.0                    # Unified crypto exchange API
+aiohttp>=3.10.0                # Async HTTP client (also used by verify_my_credentials.py)
+requests>=2.32.0              # Sync HTTP client
+websockets>=13.0               # WebSocket support
+httpx>=0.27.0                 # Modern HTTP client
+PyJWT>=2.8.0                  # JWT authentication (Coinbase, CME, etc.)
+cryptography>=43.0.0          # Key serialization (Coinbase Advanced Trade API)
+yfinance>=0.2.40              # Yahoo Finance (CME BTC futures collector)
+
+# -----------------------------------------------------------------------------
+# Statistical Analysis & Econometrics
+# -----------------------------------------------------------------------------
+statsmodels>=0.14.2           # Statistical models (cointegration, etc.)
+arch>=7.0.0                   # ARCH/GARCH models + Numba-accelerated cointegration tests
+hmmlearn>=0.3.2               # Hidden Markov Models
+
+# -----------------------------------------------------------------------------
+# Machine Learning
+# -----------------------------------------------------------------------------
+scikit-learn>=1.6.0           # ML algorithms
+lightgbm>=4.5.0               # Gradient boosting
+xgboost>=2.1.0                # XGBoost (requires: brew install libomp on macOS)
+
+# -----------------------------------------------------------------------------
+# GPU/Parallel Acceleration
+# -----------------------------------------------------------------------------
+numba>=0.60.0                 # JIT compilation for numerical speedup
+joblib>=1.4.0                 # Parallel processing (cointegration, ML, walk-forward)
+pyopencl>=2024.2              # GPU acceleration via OpenCL (AMD/Intel GPUs)
+# Optional GPU libraries (uncomment if needed):
+# pyclblast>=1.0.0            # OpenCL BLAS acceleration
+# reikna>=0.8.0               # GPU algorithms (FFT, RNG, etc.)
+
+# -----------------------------------------------------------------------------
+# Portfolio Optimization
+# -----------------------------------------------------------------------------
+# riskfolio-lib>=5.0.0          # Portfolio optimization (HRP, etc.) - Removed: requires LLVM, not used in codebase
+# pypfopt>=1.5.0,<2.0.0              # Portfolio optimization (unavailable on PyPI)
+cvxpy>=1.4.0                  # Convex optimization
+
+# -----------------------------------------------------------------------------
+# Options & Derivatives (Optional)
+# -----------------------------------------------------------------------------
+py_vollib>=1.0.1              # Options pricing
+# QuantLib>=1.30                      # Uncomment if needed (large dependency)
+
+# -----------------------------------------------------------------------------
+# Data Storage & Serialization
+# -----------------------------------------------------------------------------
+pyarrow>=18.0.0              # Parquet support
+fastparquet>=2024.11.0      # Alternative Parquet engine
+h5py>=3.12.0                   # HDF5 support
+msgpack>=1.1.0                # Fast serialization
+
+# -----------------------------------------------------------------------------
+# Visualization
+# -----------------------------------------------------------------------------
+matplotlib>=3.10.0             # Core plotting
+seaborn>=0.13.0               # Statistical visualization
+plotly>=5.24.0                # Interactive plots
+kaleido>=0.2.1                # Plotly static image export
+
+# -----------------------------------------------------------------------------
+# Configuration & Environment
+# -----------------------------------------------------------------------------
+pydantic>=2.10.0               # Data validation
+pydantic-settings>=2.6.0     # Settings management
+python-dotenv>=1.0.1          # Environment variables (also used by verify_my_credentials.py)
+PyYAML>=6.0.3                 # YAML parsing
+toml>=0.10.2                  # TOML parsing
+
+# -----------------------------------------------------------------------------
+# Logging & Monitoring
+# -----------------------------------------------------------------------------
+structlog>=24.4.0            # Structured logging
+rich>=13.9.0                 # Rich terminal output
+tqdm>=4.67.0                  # Progress bars
+
+# -----------------------------------------------------------------------------
+# Async & Concurrency
+# -----------------------------------------------------------------------------
+asyncio-throttle>=1.0.2       # Async rate limiting
+aiofiles>=23.2.0             # Async file I/O
+
+# -----------------------------------------------------------------------------
+# Testing
+# -----------------------------------------------------------------------------
+pytest>=8.4.0                 # Testing framework
+pytest-asyncio>=0.25.0        # Async test support
+pytest-cov>=5.1.0             # Coverage reporting
+hypothesis>=6.141.0            # Property-based testing
+pytest-mock>=3.15.0           # Mocking support
+
+# -----------------------------------------------------------------------------
+# Code Quality
+# -----------------------------------------------------------------------------
+black>=24.10.0                # Code formatting
+isort>=5.13.0                 # Import sorting
+flake8>=7.3.0                 # Linting
+mypy>=1.19.0                   # Type checking
+pylint>=3.3.0                # Additional linting
+
+# -----------------------------------------------------------------------------
+# Documentation
+# -----------------------------------------------------------------------------
+sphinx>=7.4.0                 # Documentation generator
+sphinx-rtd-theme>=2.0.0       # ReadTheDocs theme
+
+# -----------------------------------------------------------------------------
+# Jupyter & Notebooks
+# -----------------------------------------------------------------------------
+jupyter>=1.1.0                # Jupyter ecosystem
+jupyterlab>=4.5.0             # JupyterLab
+ipywidgets>=8.1.0             # Interactive widgets
+nbformat>=5.10.0               # Notebook format
+
+# -----------------------------------------------------------------------------
+# Utilities
+# -----------------------------------------------------------------------------
+tenacity>=8.5.0               # Retry logic
+cachetools>=5.5.0             # Caching utilities
+psutil>=6.0.0                 # System resource monitoring (parallel executor, progress tracker)
+lz4>=4.3.0                    # Fast compression (cache manager)
+python-dateutil>=2.9.0        # Date utilities
+pytz>=2025.2                         # Timezone support
+typing-extensions>=4.15.0      # Typing backports

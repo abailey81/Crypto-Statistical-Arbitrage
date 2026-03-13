@@ -1,0 +1,801 @@
+# ==============================================================================
+# CRYPTO STATISTICAL ARBITRAGE - VENUE CONFIGURATION
+# ==============================================================================
+# Version: 1.0.0
+# This file contains all venue-specific configuration settings.
+# API keys should NEVER be stored here - use environment variables
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# CENTRALIZED EXCHANGES (CEX)
+# ------------------------------------------------------------------------------
+cex:
+  # --------------------------------------------------------------------------
+  # BINANCE - Primary CEX venue
+  # --------------------------------------------------------------------------
+  binance:
+    enabled: true
+    venue_type: "CEX"
+    tier: 1                       # Tier 1: High liquidity, primary venue
+    
+    # API configuration
+    api:
+      base_url: "https://api.binance.com"
+      futures_url: "https://fapi.binance.com"
+      rate_limit: 1200            # Requests per minute
+      weight_limit: 2400          # Weight per minute
+      
+    # Endpoints
+    endpoints:
+      spot_klines: "/api/v3/klines"
+      futures_klines: "/fapi/v1/klines"
+      funding_rate: "/fapi/v1/fundingRate"
+      open_interest: "/fapi/v1/openInterest"
+      exchange_info: "/fapi/v1/exchangeInfo"
+      ticker_24h: "/fapi/v1/ticker/24hr"
+    
+    # Data collection settings
+    data:
+      max_records_per_request: 1000
+      supported_intervals: ["1m", "5m", "15m", "1h", "4h", "1d"]
+      funding_interval: "8h"      # 8-hour funding
+    
+    # Transaction costs
+    costs:
+      maker_fee: 0.0001           # 0.01% maker (PDF spec)
+      taker_fee: 0.0004           # 0.04% taker
+      futures_maker: 0.0001       # 0.01% futures maker (with BNB)
+      futures_taker: 0.0004       # 0.04% futures taker
+    
+    # Slippage model
+    slippage:
+      base: 0.0001                # 0.01% base slippage
+      volume_impact: 0.00001      # Additional slippage per $1M volume
+    
+    # Capacity
+    capacity:
+      spot: 50000000              # $50M spot capacity
+      futures: 100000000          # $100M futures capacity
+      
+    # Supported assets (for filtering)
+    assets:
+      min_volume: 10000000        # $10M daily volume
+      exclude_patterns:
+        - "*UP"                   # Leveraged tokens
+        - "*DOWN"
+        - "*BULL"
+        - "*BEAR"
+        - "USDT"                  # Stablecoins
+        - "USDC"
+        - "BUSD"
+        - "DAI"
+
+  # --------------------------------------------------------------------------
+  # BYBIT - Secondary CEX for cross-validation
+  # --------------------------------------------------------------------------
+  bybit:
+    enabled: true
+    venue_type: "CEX"
+    tier: 1
+    
+    api:
+      base_url: "https://api.bybit.com"
+      rate_limit: 120             # Requests per minute
+      
+    endpoints:
+      klines: "/v5/market/kline"
+      funding_rate: "/v5/market/funding/history"
+      open_interest: "/v5/market/open-interest"
+      
+    data:
+      max_records_per_request: 200
+      supported_intervals: ["1", "5", "15", "60", "240", "D"]
+      funding_interval: "8h"
+      
+    costs:
+      maker_fee: 0.0001           # 0.01% maker
+      taker_fee: 0.0006           # 0.06% taker
+      
+    slippage:
+      base: 0.0002
+      volume_impact: 0.00002
+      
+    capacity:
+      futures: 50000000           # $50M
+
+  # --------------------------------------------------------------------------
+  # OKX - Additional CEX for validation
+  # --------------------------------------------------------------------------
+  okx:
+    enabled: true
+    venue_type: "CEX"
+    tier: 1
+    
+    api:
+      base_url: "https://www.okx.com"
+      rate_limit: 60              # Requests per minute
+      
+    endpoints:
+      klines: "/api/v5/market/candles"
+      funding_rate: "/api/v5/public/funding-rate-history"
+      open_interest: "/api/v5/public/open-interest"
+      
+    data:
+      max_records_per_request: 100
+      supported_intervals: ["1m", "5m", "15m", "1H", "4H", "1D"]
+      funding_interval: "8h"
+      
+    costs:
+      maker_fee: 0.0002
+      taker_fee: 0.0005
+      
+    capacity:
+      futures: 30000000           # $30M
+
+  # --------------------------------------------------------------------------
+  # COINBASE - US-regulated CEX
+  # --------------------------------------------------------------------------
+  coinbase:
+    enabled: false                # Optional - requires special access
+    venue_type: "CEX"
+    tier: 1
+
+    api:
+      base_url: "https://api.exchange.coinbase.com"
+      rate_limit: 10              # Requests per second
+
+    endpoints:
+      candles: "/products/{product_id}/candles"
+      ticker: "/products/{product_id}/ticker"
+
+    data:
+      max_records_per_request: 300
+      supported_intervals: [60, 300, 900, 3600, 21600, 86400]
+
+    costs:
+      maker_fee: 0.004            # 0.40% maker (volume-based)
+      taker_fee: 0.006            # 0.60% taker
+
+  # --------------------------------------------------------------------------
+  # KRAKEN - Additional CEX for cross-validation
+  # --------------------------------------------------------------------------
+  kraken:
+    enabled: true
+    venue_type: "CEX"
+    tier: 1
+
+    api:
+      base_url: "https://api.kraken.com"
+      rate_limit: 15              # Requests per second
+
+    endpoints:
+      ohlc: "/0/public/OHLC"
+      ticker: "/0/public/Ticker"
+
+    data:
+      max_records_per_request: 720
+      supported_intervals: [1, 5, 15, 30, 60, 240, 1440]
+
+    costs:
+      maker_fee: 0.0016
+      taker_fee: 0.0026
+
+    capacity:
+      spot: 30000000              # $30M
+
+# ------------------------------------------------------------------------------
+# HYBRID VENUES (On-chain settlement, orderbook execution)
+# ------------------------------------------------------------------------------
+hybrid:
+  # --------------------------------------------------------------------------
+  # HYPERLIQUID - Primary hybrid venue
+  # --------------------------------------------------------------------------
+  hyperliquid:
+    enabled: true
+    venue_type: "hybrid"
+    tier: 1
+    chain: "arbitrum"             # Settles on Arbitrum L1
+    
+    api:
+      base_url: "https://api.hyperliquid.xyz"
+      info_endpoint: "/info"
+      rate_limit: 100             # Requests per minute (conservative)
+      
+    endpoints:
+      funding_history:
+        type: "fundingHistory"
+      candles:
+        type: "candleSnapshot"
+      meta:
+        type: "meta"
+      all_mids:
+        type: "allMids"
+        
+    data:
+      max_hours_per_request: 500  # API limitation
+      funding_interval: "1h"      # HOURLY funding (different from CEX)
+      supported_intervals: ["1m", "5m", "15m", "1h", "4h", "1d"]
+      
+    # IMPORTANT: Normalize hourly funding to 8-hour equivalent
+    funding_normalization:
+      raw_interval: "hourly"
+      normalize_to: "8h"
+      multiplier: 8               # hourly_rate * 8 = 8h_equivalent
+      annualize_factor: 8760      # hourly * 8760 = annual
+      
+    costs:
+      maker_fee: 0.0000           # 0.00% maker
+      taker_fee: 0.00025          # 0.025% taker
+      gas_cost: 0.50              # ~$0.50 per trade (Arbitrum)
+      
+    slippage:
+      base: 0.0002
+      volume_impact: 0.00005
+      
+    capacity:
+      perps: 10000000             # $10M (growing rapidly)
+      
+    # Unique features
+    features:
+      cross_margin: true
+      portfolio_margin: true
+      max_leverage: 50
+
+  # --------------------------------------------------------------------------
+  # DYDX V4 - Cosmos-based perps
+  # --------------------------------------------------------------------------
+  dydx_v4:
+    enabled: true
+    venue_type: "hybrid"
+    tier: 2
+    chain: "cosmos"               # Custom Cosmos appchain
+
+    api:
+      base_url: "https://indexer.dydx.trade/v4"
+      rate_limit: 100
+
+    endpoints:
+      candles: "/candles/perpetualMarkets/{ticker}"
+      funding: "/historicalFunding/{ticker}"
+      markets: "/perpetualMarkets"
+
+    data:
+      funding_interval: "1h"      # Hourly funding
+      supported_intervals: ["1MIN", "5MINS", "15MINS", "1HOUR", "4HOURS", "1DAY"]
+
+    funding_normalization:
+      raw_interval: "hourly"
+      normalize_to: "8h"
+      multiplier: 8
+
+    costs:
+      maker_fee: 0.0000           # 0.00% maker
+      taker_fee: 0.0005           # 0.05% taker
+      gas_cost: 0.01              # Minimal on Cosmos
+
+    slippage:
+      base: 0.0003
+      volume_impact: 0.0001
+
+    capacity:
+      perps: 5000000              # $5M (lower liquidity)
+
+  # --------------------------------------------------------------------------
+  # DRIFT - Solana-based perps
+  # --------------------------------------------------------------------------
+  drift:
+    enabled: true
+    venue_type: "hybrid"
+    tier: 2
+    chain: "solana"
+
+    api:
+      base_url: "https://mainnet-beta.api.drift.trade"
+      rate_limit: 100
+
+    endpoints:
+      markets: "/markets"
+      funding: "/funding"
+      trades: "/trades"
+
+    data:
+      funding_interval: "1h"
+      supported_intervals: ["1m", "5m", "15m", "1h", "4h", "1d"]
+
+    funding_normalization:
+      raw_interval: "hourly"
+      normalize_to: "8h"
+      multiplier: 8
+
+    costs:
+      maker_fee: 0.0000
+      taker_fee: 0.0004
+      gas_cost: 0.01
+
+    capacity:
+      perps: 3000000
+
+# ------------------------------------------------------------------------------
+# DECENTRALIZED EXCHANGES (DEX)
+# ------------------------------------------------------------------------------
+dex:
+  # --------------------------------------------------------------------------
+  # UNISWAP V3 - Primary DEX
+  # --------------------------------------------------------------------------
+  uniswap_v3:
+    enabled: true
+    venue_type: "DEX"
+    tier: 2
+    
+    # Multi-chain support
+    chains:
+      ethereum:
+        enabled: true
+        subgraph_url: "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/5zvR82QoaXYFyDEKLZ9t6v9adgnptxYpKpSbxtgVENFV"
+        gas_cost: 25.0            # ~$25 per swap
+        priority: 3               # Lower priority due to gas
+        
+      arbitrum:
+        enabled: true
+        subgraph_url: "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/FbCGRftH4a3yZugY7TnbYgPJVEv2LvMT6oF1fxPe9aJM"
+        gas_cost: 1.0             # ~$1 per swap
+        priority: 1               # Highest priority
+        
+      optimism:
+        enabled: true
+        subgraph_url: "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/Cghf4LfVqPiFw6fp6Y5X5Ubc8UpmUhSfJL82zwiBFLaj"
+        gas_cost: 1.0
+        priority: 2
+        
+      polygon:
+        enabled: false            # Optional
+        subgraph_url: "https://gateway.thegraph.com/api/{api_key}/subgraphs/id/3hCPRGf4z88VC5rsBKU5AA9FBBq5nF3jbKJG7VZCbhjm"
+        gas_cost: 0.10
+        priority: 4
+        
+      base:
+        enabled: true
+        subgraph_url: null        # Use alternative data source
+        gas_cost: 0.50
+        priority: 2
+    
+    # Data collection
+    data:
+      max_records_per_query: 1000  # The Graph pagination limit
+      
+    # Pool filtering
+    filters:
+      min_tvl: 500000             # $500k TVL minimum
+      min_volume_24h: 50000       # $50k daily volume
+      min_trades_24h: 100         # 100 trades/day
+      max_volume_tvl_ratio: 10    # Flag wash trading if >10x
+      
+    # Fee tiers
+    fee_tiers:
+      - 0.0001                    # 0.01% (stables)
+      - 0.0005                    # 0.05% (major pairs)
+      - 0.003                     # 0.30% (most pairs)
+      - 0.01                      # 1.00% (exotic)
+      
+    costs:
+      # Use fee tier from pool
+      slippage: 0.002             # 0.20% average slippage
+      mev_tax: 0.001              # 0.10% MEV cost
+      
+    capacity:
+      per_pool: 1000000           # $1M per pool (10% of TVL rule)
+      total: 10000000             # $10M total DEX capacity
+
+  # --------------------------------------------------------------------------
+  # SUSHISWAP V2 - Fork of Uniswap V2
+  # --------------------------------------------------------------------------
+  sushiswap:
+    enabled: true
+    venue_type: "DEX"
+    tier: 2
+
+    chains:
+      ethereum:
+        enabled: true
+        subgraph_url: "https://api.thegraph.com/subgraphs/name/sushiswap/exchange"
+        gas_cost: 25.0
+
+      arbitrum:
+        enabled: true
+        subgraph_url: "https://api.thegraph.com/subgraphs/name/sushiswap/arbitrum-exchange"
+        gas_cost: 1.0
+
+      polygon:
+        enabled: true
+        subgraph_url: "https://api.thegraph.com/subgraphs/name/sushiswap/matic-exchange"
+        gas_cost: 0.10
+
+    filters:
+      min_tvl: 100000
+      min_volume_24h: 10000
+
+    costs:
+      swap_fee: 0.003             # 0.30% swap fee
+      gas_cost: 15.0
+      slippage: 0.002
+      mev_tax: 0.001
+
+    capacity:
+      total: 5000000              # $5M total
+
+  # --------------------------------------------------------------------------
+  # CURVE - Stablecoin DEX
+  # --------------------------------------------------------------------------
+  curve:
+    enabled: true
+    venue_type: "DEX"
+    tier: 2
+
+    chains:
+      ethereum:
+        enabled: true
+        subgraph_url: "https://api.thegraph.com/subgraphs/name/curvefi/curve"
+        gas_cost: 30.0
+
+      arbitrum:
+        enabled: true
+        subgraph_url: null        # Use API
+        gas_cost: 1.0
+
+    # Specialized for stablecoins
+    pool_types:
+      - "stable"                  # Stablecoin pools
+      - "crypto"                  # Crypto pools
+      - "tricrypto"               # Mixed pools
+
+    filters:
+      min_tvl: 1000000            # $1M TVL (higher for Curve)
+      min_volume_24h: 100000
+
+    costs:
+      swap_fee: 0.0004            # 0.04% typical
+      slippage: 0.0005            # Lower slippage for stables
+
+    capacity:
+      total: 20000000             # $20M (high liquidity)
+
+  # --------------------------------------------------------------------------
+  # GMX - Perpetual DEX
+  # --------------------------------------------------------------------------
+  gmx:
+    enabled: true
+    venue_type: "DEX"
+    tier: 2
+    
+    chains:
+      arbitrum:
+        enabled: true
+        subgraph_url: "https://api.thegraph.com/subgraphs/name/gmx-io/gmx-stats"
+        gas_cost: 2.0             # Higher for perp operations
+        
+      avalanche:
+        enabled: false
+        subgraph_url: null
+        gas_cost: 1.0
+    
+    # GMX-specific (GLP pool model)
+    data:
+      funding_model: "glp_pool"   # Unique funding mechanism
+      
+    costs:
+      swap_fee: 0.003             # 0.30% swap
+      position_fee: 0.001         # 0.10% open/close
+      borrow_fee: "variable"      # Depends on utilization
+      
+    capacity:
+      perps: 5000000              # $5M
+
+  # --------------------------------------------------------------------------
+  # DEX AGGREGATORS
+  # --------------------------------------------------------------------------
+  aggregators:
+    geckoterminal:
+      enabled: true
+      base_url: "https://api.geckoterminal.com/api/v2"
+      rate_limit: 30              # 30 req/min free tier
+      endpoints:
+        pools: "/networks/{network}/pools"
+        ohlcv: "/networks/{network}/pools/{pool}/ohlcv/{timeframe}"
+        trending: "/networks/{network}/trending_pools"
+      
+    dexscreener:
+      enabled: true
+      base_url: "https://api.dexscreener.com"
+      rate_limit: 60
+      endpoints:
+        pairs: "/latest/dex/pairs/{chain}/{pair}"
+        search: "/latest/dex/search"
+
+# ------------------------------------------------------------------------------
+# OPTIONS VENUES
+# ------------------------------------------------------------------------------
+options:
+  # --------------------------------------------------------------------------
+  # DERIBIT - Primary options venue (90%+ volume)
+  # --------------------------------------------------------------------------
+  deribit:
+    enabled: true
+    venue_type: "CEX"
+    tier: 1
+    
+    api:
+      base_url: "https://www.deribit.com/api/v2"
+      ws_url: "wss://www.deribit.com/ws/api/v2"
+      rate_limit: 20              # Requests per second
+      
+    endpoints:
+      instruments: "/public/get_instruments"
+      ticker: "/public/ticker"
+      book_summary: "/public/get_book_summary_by_currency"
+      funding_rate: "/public/get_funding_rate_value"
+      volatility_index: "/public/get_volatility_index_data"
+      historical_vol: "/public/get_historical_volatility"
+      
+    data:
+      supported_currencies: ["BTC", "ETH"]
+      option_kinds: ["call", "put"]
+      future_kinds: ["future", "perpetual"]
+      
+    costs:
+      maker_fee: 0.0003           # 0.03% maker
+      taker_fee: 0.0003           # 0.03% taker
+      delivery_fee: 0.00015       # 0.015% delivery
+      
+    capacity:
+      options: 50000000           # $50M
+
+  # --------------------------------------------------------------------------
+  # LYRA - DEX options (Optimism/Arbitrum)
+  # --------------------------------------------------------------------------
+  # --------------------------------------------------------------------------
+  # AEVO - Options and perps platform
+  # --------------------------------------------------------------------------
+  aevo:
+    enabled: true
+    venue_type: "options"
+    tier: 2
+
+    api:
+      base_url: "https://api.aevo.xyz"
+      rate_limit: 100
+
+    endpoints:
+      markets: "/markets"
+      funding: "/funding"
+      instruments: "/instruments"
+
+    data:
+      funding_interval: "1h"
+      supported_intervals: ["1m", "5m", "15m", "1h", "4h", "1d"]
+
+    costs:
+      maker_fee: 0.0003
+      taker_fee: 0.0007
+
+    capacity:
+      options: 2000000
+
+  lyra:
+    enabled: true                # Enabled for Strategy 4
+    venue_type: "DEX"
+    tier: 3
+    
+    chains:
+      optimism:
+        subgraph_url: null
+      arbitrum:
+        subgraph_url: null
+        
+    # AMM-based pricing (different from orderbook)
+    pricing_model: "amm"
+    
+    costs:
+      trading_fee: 0.01           # ~1% fee
+      gas_cost: 2.0
+      
+    capacity:
+      options: 1000000            # $1M (low liquidity)
+
+# ------------------------------------------------------------------------------
+# ALTERNATIVE DATA SOURCES
+# ------------------------------------------------------------------------------
+alternative:
+  # Liquidation data
+  coinglass:
+    enabled: true
+    base_url: "https://open-api.coinglass.com/public/v2"
+    endpoints:
+      liquidations: "/liquidation_history"
+      funding: "/funding"
+      open_interest: "/open_interest"
+    rate_limit: 30
+    
+  # On-chain metrics
+  glassnode:
+    enabled: false                # Requires paid API
+    base_url: "https://api.glassnode.com/v1"
+    
+  # DeFi metrics
+  defillama:
+    enabled: true
+    base_url: "https://api.llama.fi"
+    endpoints:
+      tvl: "/tvl/{protocol}"
+      chains: "/chains"
+      protocols: "/protocols"
+    rate_limit: 60
+    
+  # Sentiment
+  fear_greed:
+    enabled: true
+    base_url: "https://api.alternative.me/fng"
+    rate_limit: 10
+
+# ------------------------------------------------------------------------------
+# MARKET DATA PROVIDERS
+# ------------------------------------------------------------------------------
+market_data:
+  # Asset fundamentals and metrics
+  messari:
+    enabled: true
+    venue_type: "market_data"
+    base_url: "https://data.messari.io/api/v1"
+    endpoints:
+      assets: "/assets"
+      metrics: "/assets/{asset}/metrics"
+      profile: "/assets/{asset}/profile"
+    rate_limit: 20
+
+  # Price aggregator
+  coingecko:
+    enabled: true
+    venue_type: "market_data"
+    base_url: "https://api.coingecko.com/api/v3"
+    endpoints:
+      coins: "/coins/{id}"
+      ohlc: "/coins/{id}/ohlc"
+      market_chart: "/coins/{id}/market_chart"
+    rate_limit: 10
+
+  # Historical prices
+  cryptocompare:
+    enabled: true
+    venue_type: "market_data"
+    base_url: "https://min-api.cryptocompare.com/data"
+    endpoints:
+      histohour: "/v2/histohour"
+      histoday: "/v2/histoday"
+    rate_limit: 30
+
+# ------------------------------------------------------------------------------
+# INDEXERS & DATA AGGREGATORS
+# ------------------------------------------------------------------------------
+indexers:
+  # TheGraph - DEX data indexer
+  thegraph:
+    enabled: true
+    venue_type: "indexer"
+    base_url: "https://gateway.thegraph.com/api"
+    rate_limit: 1000
+    protocols:
+      - "uniswap_v3"
+      - "uniswap_v2"
+      - "sushiswap"
+      - "curve"
+      - "balancer"
+      - "aave"
+
+# ------------------------------------------------------------------------------
+# ON-CHAIN ANALYTICS
+# ------------------------------------------------------------------------------
+onchain:
+  # On-chain metrics
+  santiment:
+    enabled: true
+    venue_type: "onchain"
+    base_url: "https://api.santiment.net"
+    endpoints:
+      metrics: "/graphql"
+    rate_limit: 60
+
+  # Wallet analytics
+  nansen:
+    enabled: true
+    venue_type: "onchain"
+    base_url: "https://api.nansen.ai"
+    rate_limit: 30
+
+  # Blockchain data
+  covalent:
+    enabled: true
+    venue_type: "onchain"
+    base_url: "https://api.covalenthq.com/v1"
+    rate_limit: 100
+
+  # DEX analytics
+  bitquery:
+    enabled: true
+    venue_type: "onchain"
+    base_url: "https://graphql.bitquery.io"
+    rate_limit: 60
+
+# ------------------------------------------------------------------------------
+# DEX AGGREGATORS & ROUTERS
+# ------------------------------------------------------------------------------
+dex_routers:
+  # Jupiter - Solana DEX aggregator
+  jupiter:
+    enabled: true
+    venue_type: "dex_aggregator"
+    chain: "solana"
+    base_url: "https://quote-api.jup.ag/v6"
+    rate_limit: 600
+
+  # CoW Swap - MEV-protected
+  cowswap:
+    enabled: true
+    venue_type: "dex_aggregator"
+    base_url: "https://api.cow.fi"
+    rate_limit: 100
+
+  # 1inch - Multi-chain aggregator
+  oneinch:
+    enabled: true
+    venue_type: "dex_aggregator"
+    base_url: "https://api.1inch.dev"
+    rate_limit: 30
+
+  # 0x Protocol
+  zerox:
+    enabled: true
+    venue_type: "dex_aggregator"
+    base_url: "https://api.0x.org"
+    rate_limit: 100
+
+# ------------------------------------------------------------------------------
+# ANALYTICS PLATFORMS
+# ------------------------------------------------------------------------------
+analytics:
+  # SQL analytics
+  dune:
+    enabled: true
+    venue_type: "analytics"
+    base_url: "https://api.dune.com/api/v1"
+    rate_limit: 20
+
+  # Social metrics
+  lunarcrush:
+    enabled: true
+    venue_type: "analytics"
+    base_url: "https://api.lunarcrush.com/v2"
+    rate_limit: 300
+
+# ------------------------------------------------------------------------------
+# VENUE PRIORITY AND ROUTING
+# ------------------------------------------------------------------------------
+routing:
+  # Default venue preferences by asset type
+  preferences:
+    btc_perps: ["binance", "hyperliquid", "dydx_v4"]
+    eth_perps: ["binance", "hyperliquid", "dydx_v4"]
+    altcoin_perps: ["binance", "bybit"]
+    btc_futures: ["binance", "deribit"]
+    btc_options: ["deribit"]
+    altcoin_spot: ["binance", "uniswap_v3"]
+    
+  # Failover configuration
+  failover:
+    enabled: true
+    max_retries: 3
+    timeout_seconds: 30
+    
+  # Cross-venue arbitrage pairs
+  arbitrage_pairs:
+    - ["binance", "hyperliquid"]
+    - ["binance", "dydx_v4"]
+    - ["hyperliquid", "dydx_v4"]
