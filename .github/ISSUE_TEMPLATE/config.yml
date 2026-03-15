@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/abailey81/Crypto-Statistical-Arbitrage/discussions
+    about: Ask questions, share ideas, or discuss strategies in GitHub Discussions.
+  - name: Documentation
+    url: https://github.com/abailey81/Crypto-Statistical-Arbitrage/tree/main/docs
+    about: Check the documentation for methodology, data sources, and API reference.

@@ -1,0 +1,130 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: ["abailey81"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill out the sections below so we can reproduce and fix the issue.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of the system is affected?
+      options:
+        - Data Collection (Phase 1)
+        - Altcoin StatArb Strategy (Phase 2)
+        - BTC Futures Curve Trading (Phase 3)
+        - Backtesting Engine
+        - Portfolio Optimization
+        - Reporting / Visualizations
+        - Configuration
+        - Execution Layer
+        - Tests
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: venue
+    attributes:
+      label: Venue (if applicable)
+      description: Which venue is involved?
+      options:
+        - N/A
+        - Binance
+        - Bybit
+        - OKX
+        - Kraken
+        - Coinbase
+        - Deribit
+        - CME
+        - Hyperliquid
+        - dYdX
+        - Drift
+        - Uniswap
+        - Curve
+        - GMX
+        - SushiSwap
+        - Jupiter
+        - Other DEX
+        - DeFiLlama
+        - Other Alternative Data
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the bug.
+      placeholder: Describe what happened and what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce the issue?
+      placeholder: |
+        1. Run `python run_arb.py --phase 2`
+        2. Wait for Step 3 (ML enhancement)
+        3. See error in console output
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Output / Logs
+      description: Paste any relevant error messages or log output.
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: python-version
+    attributes:
+      label: Python Version
+      options:
+        - "3.10"
+        - "3.11"
+        - "3.12"
+        - "3.13 (unsupported)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Ubuntu / Debian
+        - Other Linux
+        - Windows (WSL)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other information that might help (config changes, data size, etc.).
+    validations:
+      required: false
